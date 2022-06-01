@@ -10,6 +10,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float maxLeft;
     [SerializeField] private float maxRight;
+    public Text HpText;
     private int durabiliti;
     private int cargo;
     private int havecargo;
@@ -24,7 +25,7 @@ public class CarController : MonoBehaviour
         durabiliti = CartStats.Durability;
         cargo = CartStats.Cargo;
         havecargo = 0;
-       // GameObject.Find("Durability").transform.GetComponent<TextMeshPro>().text = "Durability:"+ durabiliti;
+        HpText.text = "Durability: " + durabiliti;
     }
 
     private void FixedUpdate()
@@ -78,7 +79,7 @@ public class CarController : MonoBehaviour
         {
             Debug.Log("Маслину.. поймав... пишов отмываться в гараж.....");
             durabiliti--;
-            //GameObject.Find("Durability").transform.GetComponent<TextMeshPro>().text = "Durability:"+ durabiliti;
+            HpText.text = "Durability: " + durabiliti;
             if (durabiliti <= 0)
                 Dead();
         }
