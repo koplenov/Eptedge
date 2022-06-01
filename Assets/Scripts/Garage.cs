@@ -20,7 +20,6 @@ public class Garage : MonoBehaviour
             levels[_currentLevel].SetActive(true);
         }
     }
-    
     public void PreviousCar()
     {
         foreach (var level in levels) level.SetActive(false);
