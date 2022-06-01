@@ -1,19 +1,30 @@
+using System;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CarController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float maxLeft;
     [SerializeField] private float maxRight;
-
-    [SerializeField] private float hp;
-
+    private int durabiliti;
+    private int cargo;
+    private int havecargo;
     private void Start()
     {
         maxLeft = (transform.position += Vector3.left * 10).x;
         maxRight = (transform.position += Vector3.right * 10).x;
+    }
+
+    private void Awake()
+    {  
+        durabiliti = CartStats.Durability;
+        cargo = CartStats.Cargo;
+        havecargo = 0;
+       // GameObject.Find("Durability").transform.GetComponent<TextMeshPro>().text = "Durability:"+ durabiliti;
     }
 
     private void FixedUpdate()
@@ -51,15 +62,24 @@ public class CarController : MonoBehaviour
 
         if (other.CompareTag("Coin"))
         {
-            Debug.Log("Ежа поймав");
-            Destroy(other.gameObject);
+            if (havecargo < cargo)
+            {
+                Debug.Log("Ежа поймав");
+                havecargo++;
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                Debug.Log("To many Yodjiks");
+            }
         }
 
         if (other.CompareTag("Wall"))
         {
             Debug.Log("Маслину.. поймав... пишов отмываться в гараж.....");
-            hp--;
-            if (hp <= 0)
+            durabiliti--;
+            //GameObject.Find("Durability").transform.GetComponent<TextMeshPro>().text = "Durability:"+ durabiliti;
+            if (durabiliti <= 0)
                 Dead();
         }
     }
