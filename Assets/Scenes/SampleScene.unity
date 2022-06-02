@@ -1539,6 +1539,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f546c698c6557e542b26011f328c21bd, type: 3}
+--- !u!1 &1246721925 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2519518326758385381, guid: f546c698c6557e542b26011f328c21bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1246721924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1246721926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1423163311115435441, guid: f546c698c6557e542b26011f328c21bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1246721924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1379704610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2200,6 +2212,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheelsFront: {fileID: 19231016}
   wheelsBack: {fileID: 1989853617}
+  levels:
+  - {fileID: 1246721926}
+  - {fileID: 1246721925}
 --- !u!1 &1698459354
 GameObject:
   m_ObjectHideFlags: 0

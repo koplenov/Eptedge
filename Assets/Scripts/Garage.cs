@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Garage : MonoBehaviour
@@ -11,67 +14,78 @@ public class Garage : MonoBehaviour
     public Text DurabilityCostText;
     public Text CargoCostText;
     public Text JewishText;
+    public static List<CarStatDto> stats = new List<CarStatDto>();
 
     public void Awake()
     {
-        CartStats.MaxDurability = (_currentLevel + 1) * 2;
-        CartStats.MaxCargo = (_currentLevel + 1) * 5;
-        CartStats.MaxJewishModifier = (_currentLevel + 1) * 2;
+        CartStats.TotalMoneyAmount = 1000;
+        
+        var newcar = new CarStatDto(_currentLevel);
+        newcar.Durability = 1;
+        newcar.Cargo = 1;
+        newcar.JewishModifier = 1;
+        
+        stats.Add(newcar);
+        
         MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
-        DurabilityCostText.text = CartStats.Durability + "/" + CartStats.MaxDurability;
-        CargoCostText.text = CartStats.Cargo + "/" + CartStats.MaxCargo;
-        JewishText.text = CartStats.JewishModifier + "/" + CartStats.MaxJewishModifier;
+        DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
+        CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
+        JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
     }
 
     public void NextCar()
     {
         foreach (var level in levels) level.SetActive(false);
-        if (CartStats.Durability == CartStats.MaxDurability && _currentLevel < levels.Length) 
+        if (stats[_currentLevel].Durability == stats[_currentLevel].maxDurability && _currentLevel < levels.Length)
         {
             _currentLevel++;
-            levels[_currentLevel].SetActive(true);
 
             if (_isLevelCarOpen2 == false)
             {
-                CartStats.MaxDurability = (_currentLevel + 1) * 2;
-                CartStats.MaxCargo = (_currentLevel + 1) * 5;
-                CartStats.MaxJewishModifier = (_currentLevel + 1) * 2;
-                CartStats.Durability = _currentLevel + 1;
-                CartStats.Cargo = _currentLevel + 1;
-                CartStats.JewishModifier = _currentLevel + 1;
+                var newcar = new CarStatDto(_currentLevel);
+                newcar.Durability = 1;
+                newcar.Cargo = 1;
+                newcar.JewishModifier = 1;
+                stats.Add(newcar);
                 _isLevelCarOpen2 = true;
-                DurabilityCostText.text = CartStats.Durability + "/" + CartStats.MaxDurability;
-                CargoCostText.text = CartStats.Cargo + "/" + CartStats.MaxCargo;
-                JewishText.text = CartStats.JewishModifier + "/" + CartStats.MaxJewishModifier;
             }
+            DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
+            CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
+            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
         }
-        else
-        {
-            levels[_currentLevel].SetActive(true);
-        }
+        levels[_currentLevel].SetActive(true);
+        DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
+        CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
+        JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
     }
 
     public void PreviousCar()
     {
         foreach (var level in levels) level.SetActive(false);
-       
-          if (_currentLevel > 0)
-          {
+
+        if (_currentLevel > 0)
+        {
             _currentLevel--;
             levels[_currentLevel].SetActive(true);
+            DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
+            CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
+            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
         }
         else
         {
             levels[_currentLevel].SetActive(true);
+            DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
+            CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
+            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
         }
     }
 
     public void DurabilityUp()
     {
-        if (CartStats.Durability < CartStats.MaxDurability && CartStats.TotalMoneyAmount >= 50)
+        if (stats[_currentLevel].Durability < stats[_currentLevel].maxDurability && CartStats.TotalMoneyAmount >= 50)
         {
-            CartStats.Durability += 1;
-            DurabilityCostText.text = CartStats.Durability + "/" + CartStats.MaxDurability;
+            stats[_currentLevel].Durability++;
+            DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
             CartStats.TotalMoneyAmount -= 50;
             MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
         }
@@ -83,10 +97,10 @@ public class Garage : MonoBehaviour
 
     public void CargoUp()
     {
-        if (CartStats.Cargo < CartStats.MaxCargo && CartStats.TotalMoneyAmount >= 10)
+        if (stats[_currentLevel].Cargo < stats[_currentLevel].maxCargo && CartStats.TotalMoneyAmount >= 10)
         {
-            CartStats.Cargo += 1;
-            CargoCostText.text = CartStats.Cargo + "/" + CartStats.MaxCargo;
+            stats[_currentLevel].Cargo++;
+            CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
             CartStats.TotalMoneyAmount -= 10;
             MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
         }
@@ -98,10 +112,11 @@ public class Garage : MonoBehaviour
 
     public void JewishModifierUp()
     {
-        if (CartStats.JewishModifier < CartStats.MaxJewishModifier && CartStats.TotalMoneyAmount >= 150)
+        if (stats[_currentLevel].JewishModifier < stats[_currentLevel].maxJewishModifier &&
+            CartStats.TotalMoneyAmount >= 150)
         {
-            CartStats.JewishModifier += 1;
-            JewishText.text = CartStats.JewishModifier + "/" + CartStats.MaxJewishModifier;
+            stats[_currentLevel].JewishModifier++;
+            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
             CartStats.TotalMoneyAmount -= 150;
             MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
         }
@@ -109,5 +124,14 @@ public class Garage : MonoBehaviour
         {
             JewishText.color = Color.red;
         }
+    }
+
+    public void LetsGo()
+    {
+        CartStats.Level = stats[_currentLevel].Level;
+        CartStats.Durability = stats[_currentLevel].Durability;
+        CartStats.Cargo = stats[_currentLevel].Cargo;
+        CartStats.JewishModifier = stats[_currentLevel].JewishModifier;
+        SceneManager.LoadScene("SampleScene");
     }
 }
