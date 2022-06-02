@@ -33,6 +33,9 @@ public class Garage : MonoBehaviour
 
             if (_isLevelCarOpen2 == false)
             {
+                CartStats.MaxDurability = (_currentLevel + 1) * 2;
+                CartStats.MaxCargo = (_currentLevel + 1) * 5;
+                CartStats.MaxJewishModifier = (_currentLevel + 1) * 2;
                 CartStats.Durability = _currentLevel + 1;
                 CartStats.Cargo = _currentLevel + 1;
                 CartStats.JewishModifier = _currentLevel + 1;
