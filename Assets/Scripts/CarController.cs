@@ -11,14 +11,23 @@ public class CarController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float maxLeft;
     [SerializeField] private float maxRight;
+    [SerializeField] private GameObject Loose;
+    [SerializeField] private GameObject Victory;
+    public Text Save;
+    public Text PayDay;
+    public Text Damage;
+    public Text LooseDamage;
     public Text DurabilityText;
     public Text CargoText;
     private int durabiliti;
     private int cargo;
     private int havecargo;
     private int moneymodifier;
+
     private void Start()
     {
+        Loose.SetActive(false);
+        Victory.SetActive(false);
         maxLeft = (transform.position += Vector3.left * 10).x;
         maxRight = (transform.position += Vector3.right * 10).x;
     }
@@ -92,11 +101,22 @@ public class CarController : MonoBehaviour
         }
     }
 
-    public void Dead() => SceneManager.LoadScene("Garage");
+    public void Dead()
+    {
+        Time.timeScale = 0;
+        Cursor.visible = true;
+        Loose.SetActive(true);
+        LooseDamage.text = "Получено "+ CartStats.Durability+" урона";
+    }
 
     public void Win()
     {
+        Time.timeScale = 0;
+        Cursor.visible = true;
         CartStats.TotalMoneyAmount += havecargo * moneymodifier;
-        SceneManager.LoadScene("Garage");
+        Victory.SetActive(true);
+        Save.text = "Спасено: " + havecargo + " ежей";
+        PayDay.text = "Заработано: "+ (havecargo * moneymodifier)+" $";
+        Damage.text = "Получено "+ (CartStats.Durability - durabiliti)+" урона";
     }
 }

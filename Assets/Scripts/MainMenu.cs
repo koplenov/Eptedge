@@ -6,7 +6,12 @@ public class MainMenu : MonoBehaviour
 {
     public void Exit() => Application.Quit();
     public void GoToMenu() => SceneManager.LoadScene("Menu");
-    public void ToGarage() => SceneManager.LoadScene("Garage");
+    public void ToGarage()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Garage");
+    }
+
     public void Play() => SceneManager.LoadScene("SampleScene");
     public void ToggleSound()
     {
