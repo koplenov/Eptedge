@@ -3,6 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CarController : MonoBehaviour
@@ -10,10 +11,12 @@ public class CarController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float maxLeft;
     [SerializeField] private float maxRight;
-    public Text HpText;
+    public Text DurabilityText;
+    public Text CargoText;
     private int durabiliti;
     private int cargo;
     private int havecargo;
+    private int moneymodifier;
     private void Start()
     {
         maxLeft = (transform.position += Vector3.left * 10).x;
@@ -21,11 +24,13 @@ public class CarController : MonoBehaviour
     }
 
     private void Awake()
-    {  
+    {
         durabiliti = CartStats.Durability;
         cargo = CartStats.Cargo;
+        moneymodifier = CartStats.JewishModifier;
         havecargo = 0;
-        HpText.text = "Durability: " + durabiliti;
+        DurabilityText.text = "Durability: " + durabiliti;
+        CargoText.text = havecargo + "/" + cargo;
     }
 
     private void FixedUpdate()
@@ -68,10 +73,12 @@ public class CarController : MonoBehaviour
                 Debug.Log("Ежа поймав");
                 havecargo++;
                 Destroy(other.gameObject);
+                CargoText.text = havecargo + "/" + cargo;
             }
             else
             {
                 Debug.Log("To many Yodjiks");
+                Win();
             }
         }
 
@@ -79,11 +86,17 @@ public class CarController : MonoBehaviour
         {
             Debug.Log("Маслину.. поймав... пишов отмываться в гараж.....");
             durabiliti--;
-            HpText.text = "Durability: " + durabiliti;
+            DurabilityText.text = "Durability: " + durabiliti;
             if (durabiliti <= 0)
                 Dead();
         }
     }
 
     public void Dead() => SceneManager.LoadScene("Garage");
+
+    public void Win()
+    {
+        CartStats.TotalMoneyAmount += havecargo * moneymodifier;
+        SceneManager.LoadScene("Garage");
+    }
 }
