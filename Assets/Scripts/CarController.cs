@@ -84,11 +84,12 @@ public class CarController : MonoBehaviour
                 Destroy(other.gameObject);
                 CargoText.text = havecargo + "/" + cargo;
             }
-            else
+            if(havecargo == cargo)
             {
                 Debug.Log("To many Yodjiks");
                 Win();
             }
+            
         }
 
         if (other.CompareTag("Wall"))
