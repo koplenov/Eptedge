@@ -8,6 +8,6 @@ public class Startup : MonoBehaviour
     {
         CartStats.Durability = 1;
         CartStats.Cargo = 1;
-        CartStats.JewishModifier = 1;
+        PlayerPrefs.SetInt("JewishModifier", 1);
     }
 }

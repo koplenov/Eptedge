@@ -1,9 +1,5 @@
-using System;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CarController : MonoBehaviour
@@ -36,7 +32,7 @@ public class CarController : MonoBehaviour
     {
         durabiliti = CartStats.Durability;
         cargo = CartStats.Cargo;
-        moneymodifier = CartStats.JewishModifier;
+        moneymodifier = PlayerPrefs.GetInt("JewishModifier");
         havecargo = 0;
         DurabilityText.text = "Durability: " + durabiliti;
         CargoText.text = havecargo + "/" + cargo;
@@ -84,12 +80,12 @@ public class CarController : MonoBehaviour
                 Destroy(other.gameObject);
                 CargoText.text = havecargo + "/" + cargo;
             }
-            if(havecargo == cargo)
+
+            if (havecargo == cargo)
             {
                 Debug.Log("To many Yodjiks");
                 Win();
             }
-            
         }
 
         if (other.CompareTag("Wall"))
@@ -107,7 +103,7 @@ public class CarController : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Loose.SetActive(true);
-        LooseDamage.text = "Получено "+ CartStats.Durability+" урона";
+        LooseDamage.text = "Получено " + CartStats.Durability + " урона";
     }
 
     public void Win()
@@ -117,7 +113,7 @@ public class CarController : MonoBehaviour
         CartStats.TotalMoneyAmount += havecargo * moneymodifier;
         Victory.SetActive(true);
         Save.text = "Спасено: " + havecargo + " ежей";
-        PayDay.text = "Заработано: "+ (havecargo * moneymodifier)+" $";
-        Damage.text = "Получено "+ (CartStats.Durability - durabiliti)+" урона";
+        PayDay.text = "Заработано: " + (havecargo * moneymodifier) + " Руб.";
+        Damage.text = "Получено " + (CartStats.Durability - durabiliti) + " урона";
     }
 }

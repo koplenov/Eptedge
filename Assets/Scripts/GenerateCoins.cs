@@ -1,11 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 public class GenerateCoins : MonoBehaviour
 {
     [SerializeField] private GameObject itemVariable;
     [SerializeField] private GameObject[] generatePoints;
-
-    private void OnEnable()
+    
+    private void OnEnable() => StartCoroutine(GenCoins());
+    IEnumerator GenCoins()
     {
         foreach (var generatePoint in generatePoints)
         {
@@ -16,6 +18,6 @@ public class GenerateCoins : MonoBehaviour
                 item.transform.parent = generatePoint.transform.parent;
             }            
         }
-
+        yield return null;
     }
 }

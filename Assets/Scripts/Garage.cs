@@ -9,7 +9,9 @@ public class Garage : MonoBehaviour
 {
     [SerializeField] private GameObject[] levels;
     private int _currentLevel;
+    private int JewishModifier;
     private bool _isLevelCarOpen2 = false;
+    
     public Text MoneyAmountText;
     public Text DurabilityCostText;
     public Text CargoCostText;
@@ -23,18 +25,21 @@ public class Garage : MonoBehaviour
         var newcar = new CarStatDto(_currentLevel);
         newcar.Durability = 1;
         newcar.Cargo = 1;
-        newcar.JewishModifier = 1;
-        
         stats.Add(newcar);
-        
-        MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
+        MoneyAmountText.text = CartStats.TotalMoneyAmount + " Руб.";
         DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
         CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
-        JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
+        JewishText.text = PlayerPrefs.GetInt("JewishModifier") + "!";
     }
 
     public void NextCar()
     {
+        if (_currentLevel+1 >= levels.Length)
+        {
+            Debug.Log("леха иди вфоыьшщвфы");
+            return;
+        }
+        
         foreach (var level in levels) level.SetActive(false);
         if (stats[_currentLevel].Durability == stats[_currentLevel].maxDurability && _currentLevel < levels.Length)
         {
@@ -45,39 +50,28 @@ public class Garage : MonoBehaviour
                 var newcar = new CarStatDto(_currentLevel);
                 newcar.Durability = 1;
                 newcar.Cargo = 1;
-                newcar.JewishModifier = 1;
                 stats.Add(newcar);
                 _isLevelCarOpen2 = true;
             }
             DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
             CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
-            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
         }
         levels[_currentLevel].SetActive(true);
         DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
         CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
-        JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
     }
 
     public void PreviousCar()
     {
         foreach (var level in levels) level.SetActive(false);
 
-        if (_currentLevel > 0)
-        {
-            _currentLevel--;
+        if (_currentLevel > 0) _currentLevel--;
+
             levels[_currentLevel].SetActive(true);
             DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
             CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
-            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
-        }
-        else
-        {
-            levels[_currentLevel].SetActive(true);
-            DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
-            CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
-            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
-        }
+            JewishText.text = PlayerPrefs.GetInt("JewishModifier") + "!";
+       
     }
 
     public void DurabilityUp()
@@ -87,7 +81,7 @@ public class Garage : MonoBehaviour
             stats[_currentLevel].Durability++;
             DurabilityCostText.text = stats[_currentLevel].Durability + "/" + stats[_currentLevel].maxDurability;
             CartStats.TotalMoneyAmount -= 50;
-            MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
+            MoneyAmountText.text = CartStats.TotalMoneyAmount + " Руб.";
         }
         else
         {
@@ -102,7 +96,7 @@ public class Garage : MonoBehaviour
             stats[_currentLevel].Cargo++;
             CargoCostText.text = stats[_currentLevel].Cargo + "/" + stats[_currentLevel].maxCargo;
             CartStats.TotalMoneyAmount -= 10;
-            MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
+            MoneyAmountText.text = CartStats.TotalMoneyAmount + " Руб.";
         }
         else
         {
@@ -112,13 +106,12 @@ public class Garage : MonoBehaviour
 
     public void JewishModifierUp()
     {
-        if (stats[_currentLevel].JewishModifier < stats[_currentLevel].maxJewishModifier &&
-            CartStats.TotalMoneyAmount >= 150)
+        if (CartStats.TotalMoneyAmount >= 150)
         {
-            stats[_currentLevel].JewishModifier++;
-            JewishText.text = stats[_currentLevel].JewishModifier + "/" + stats[_currentLevel].maxJewishModifier;
+            PlayerPrefs.SetInt("JewishModifier",PlayerPrefs.GetInt("JewishModifier")+1);
+            JewishText.text = PlayerPrefs.GetInt("JewishModifier") + "!";
             CartStats.TotalMoneyAmount -= 150;
-            MoneyAmountText.text = CartStats.TotalMoneyAmount + " $";
+            MoneyAmountText.text = CartStats.TotalMoneyAmount + " Руб.";
         }
         else
         {
@@ -131,7 +124,6 @@ public class Garage : MonoBehaviour
         CartStats.Level = stats[_currentLevel].Level;
         CartStats.Durability = stats[_currentLevel].Durability;
         CartStats.Cargo = stats[_currentLevel].Cargo;
-        CartStats.JewishModifier = stats[_currentLevel].JewishModifier;
         SceneManager.LoadScene("SampleScene");
     }
 }
