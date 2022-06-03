@@ -9,12 +9,12 @@ public class CarController : MonoBehaviour
     [SerializeField] private float maxRight;
     [SerializeField] private GameObject Loose;
     [SerializeField] private GameObject Victory;
-    public Text Save;
-    public Text PayDay;
-    public Text Damage;
-    public Text LooseDamage;
-    public Text DurabilityText;
-    public Text CargoText;
+    [SerializeField]public Text Save;
+    [SerializeField]public Text PayDay;
+    [SerializeField]public Text Damage;
+    [SerializeField]public Text LooseDamage;
+    [SerializeField]public Text DurabilityText;
+    [SerializeField]public Text CargoText;
     private int durabiliti;
     private int cargo;
     private int havecargo;
@@ -94,7 +94,7 @@ public class CarController : MonoBehaviour
             durabiliti--;
             DurabilityText.text = "Durability: " + durabiliti;
             if (durabiliti <= 0)
-                Dead();
+              Dead();
         }
     }
 

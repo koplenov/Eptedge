@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2139894, g: 0.2139894, b: 0.2139894, a: 1}
+  m_IndirectSpecularColor: {r: 0.009564501, g: 0.012444152, b: 0.016438233, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1234,8 +1234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roadSize: {x: 0, y: 0, z: 240}
   road: {fileID: 8634294750467117741, guid: fa3b925aa8fe7b441a927ed3216af415, type: 3}
-  generatedRoads: 0
-  maxTilesCount: 5
+  finish: {fileID: 8634294751458967597}
+  maxTilesCount: 2
   finishAction:
     m_PersistentCalls:
       m_Calls:
@@ -1983,7 +1983,7 @@ GameObject:
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1526228929
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2508,3 +2508,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa3b925aa8fe7b441a927ed3216af415, type: 3}
+--- !u!1 &8634294751458967597 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5109433992753857358, guid: fa3b925aa8fe7b441a927ed3216af415,
+    type: 3}
+  m_PrefabInstance: {fileID: 8634294751458967596}
+  m_PrefabAsset: {fileID: 0}
